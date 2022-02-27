@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Lab05ARSW.iml" filepath="$PROJECT_DIR$/.idea/Lab05ARSW.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpringBoot_REST_API_Blueprints_Part2/blueprints-api.iml" filepath="$PROJECT_DIR$/SpringBoot_REST_API_Blueprints_Part2/blueprints-api.iml" />
+    </modules>
+  </component>
+</project>
