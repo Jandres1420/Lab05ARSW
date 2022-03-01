@@ -29,9 +29,12 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     public InMemoryBlueprintPersistence() {
         //load stub data
         Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
+        Point[] pts2=new Point[]{new Point(141, 141),new Point(116, 116)};
+        Point[] pts3=new Point[]{new Point(20, 20),new Point(30, 30)};
         Blueprint bp=new Blueprint("_authorname_", "_bpname_ ",pts);
+        Blueprint bp2=new Blueprint("_authorname_", "_bpname_ ",pts2);
         blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
-        
+        blueprints.put(new Tuple<>(bp2.getAuthor(),bp2.getName()),bp2);
     }    
     
     @Override
