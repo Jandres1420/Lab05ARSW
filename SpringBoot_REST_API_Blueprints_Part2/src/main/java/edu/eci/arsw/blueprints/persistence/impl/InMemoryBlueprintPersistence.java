@@ -86,5 +86,11 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         return blueprints.values().stream().collect(Collectors.toSet());
     }
 
+    @Override
+    public void deleteAuthorsBpname(String author, String bpname) {
+        blueprints.remove(new Tuple<>(author,bpname));
+
+    }
+
 
 }

@@ -36,7 +36,8 @@ public class BlueprintsServices {
         }
 
     }
-    
+
+
     public Set<Blueprint> getAllBlueprints(){
         try {
             return bpp.getAllBlueprints();
@@ -45,7 +46,7 @@ public class BlueprintsServices {
         }
         return null;
     }
-    
+
     /**
      * 
      * @param author blueprint's author
@@ -74,6 +75,9 @@ public class BlueprintsServices {
         }catch (BlueprintNotFoundException ex){
             throw new UnsupportedOperationException("Not supported yet.");
         }
+    }
+    public void deleteAuthorsBpname(String author, String bpname){
+        bpp.deleteAuthorsBpname(author,bpname);
     }
     
 }

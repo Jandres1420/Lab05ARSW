@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -46,17 +43,6 @@ public class BlueprintAPIController {
 
     }
 
-   /** @RequestMapping(method = RequestMethod.GET,value = "/authors/{author}/bpname/{bpname}")
-    public ResponseEntity<?> getBlueprints(@PathVariable String author, @PathVariable String bpname ){
-        try {
-            Set<Blueprint>blueprints= new Set<Blueprint>(blueprintsServices.getBlueprint(author,bpname));
-            String gsonToString = this.stringToGson(new HashSet<Blueprint>(blueprintsServices.getBlueprint(author,bpname)));
-        } catch (BlueprintNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }**/
-
     @RequestMapping(method = RequestMethod.GET, value ="/authors/{authors}")
     public ResponseEntity<?> getBlueprintsByAuthor(@PathVariable String authors){
         try {
@@ -67,15 +53,34 @@ public class BlueprintAPIController {
         }
     }
 
-    private String stringToGson(Set<Blueprint> allBlueprints){
-        List<Blueprint> blueprintList = new ArrayList<>(allBlueprints);
-        String convertidor ="{\"blueprints\" : ";
-        for(Blueprint bs: blueprintList){
-            convertidor += "Author : " + bs.getAuthor() + ", Name: " + bs.getName() + " , Points :" + bs.getPoints();
+    @RequestMapping(method = RequestMethod.GET,value = "/authors/{author}/bpname/{bpname}")
+    public ResponseEntity<?> getBluePrint(@PathVariable String author, @PathVariable String bpname ){
+        try {
+            return new ResponseEntity<>(blueprintsServices.getBlueprint(author,bpname), HttpStatus.ACCEPTED);
+        } catch (BlueprintNotFoundException e) {
+            return new ResponseEntity<>("Error 404", HttpStatus.NOT_FOUND);
         }
-        convertidor += "}";
-        return convertidor;
+
     }
 
+    //POST
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity<?> manejadorPostRecursoPlanos(@RequestBody Blueprint blueprint) {
+        try {
+            blueprintsServices.addNewBlueprint(blueprint);
+            return new ResponseEntity<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN.getReasonPhrase(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    //PUT
+    @RequestMapping(value = "/authors/{author}/blueprints/{bpname}", method = RequestMethod.PUT)
+    public ResponseEntity<?> putBlueprintsByAuthor(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint blueprint) {
+        blueprintsServices.deleteAuthorsBpname(author,bpname);
+        blueprintsServices.addNewBlueprint(blueprint);
+        return ResponseEntity.ok(blueprint);
+    }
 
 }
