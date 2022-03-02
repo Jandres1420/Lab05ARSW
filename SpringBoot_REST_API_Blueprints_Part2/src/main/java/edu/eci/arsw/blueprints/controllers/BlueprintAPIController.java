@@ -30,18 +30,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/blueprints")
 public class BlueprintAPIController {
     @Autowired
-    @Qualifier
     private BlueprintsServices blueprintsServices;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> getAllBluePrints() {
         try {
-            String gsonToString = this.stringToGson(blueprintsServices.getAllBlueprints());
+            //String gsonToString = this.stringToGson(blueprintsServices.getAllBlueprints());
             //obtener datos que se enviarán a través del API
-            return new ResponseEntity<>(new Gson().toJson(gsonToString), HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(blueprintsServices.getAllBlueprints(), HttpStatus.ACCEPTED);
         } catch (Exception ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error 404", HttpStatus.NOT_FOUND);
         }
 
 
@@ -58,18 +57,16 @@ public class BlueprintAPIController {
 
     }**/
 
-    @RequestMapping(method = RequestMethod.GET, value ="/authors/{author}")
-    public ResponseEntity<?> getBlueprintsByAuthor(@PathVariable String authour){
+    @RequestMapping(method = RequestMethod.GET, value ="/authors/{authors}")
+    public ResponseEntity<?> getBlueprintsByAuthor(@PathVariable String authors){
         try {
-            String gsonToString = this.stringToGson(blueprintsServices.getBlueprintsByAuthor(authour));
-            return new ResponseEntity<>(new Gson().toJson(gsonToString),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(blueprintsServices.getBlueprintsByAuthor(authors),HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error 404", HttpStatus.NOT_FOUND);
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value =)
     private String stringToGson(Set<Blueprint> allBlueprints){
         List<Blueprint> blueprintList = new ArrayList<>(allBlueprints);
         String convertidor ="{\"blueprints\" : ";
