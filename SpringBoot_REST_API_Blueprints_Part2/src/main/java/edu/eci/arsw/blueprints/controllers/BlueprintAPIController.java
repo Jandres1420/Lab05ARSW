@@ -71,16 +71,19 @@ public class BlueprintAPIController {
             return new ResponseEntity<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN.getReasonPhrase(), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Error 404", HttpStatus.FORBIDDEN);
         }
     }
 
     //PUT
     @RequestMapping(value = "/authors/{author}/blueprints/{bpname}", method = RequestMethod.PUT)
     public ResponseEntity<?> putBlueprintsByAuthor(@PathVariable String author, @PathVariable String bpname, @RequestBody Blueprint blueprint) {
-        blueprintsServices.deleteAuthorsBpname(author,bpname);
-        blueprintsServices.addNewBlueprint(blueprint);
-        return ResponseEntity.ok(blueprint);
+        try{
+            blueprintsServices.deleteAuthorsBpname(author,bpname);
+            blueprintsServices.addNewBlueprint(blueprint);
+            return ResponseEntity.ok(blueprint);
+        }catch (Exception e){
+            return new ResponseEntity<>("Error 404", HttpStatus.NOT_FOUND);
+        }
     }
-
 }
